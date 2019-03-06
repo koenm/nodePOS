@@ -1,0 +1,47 @@
+body {
+  background-color: #eee;
+  padding: 5px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+#top,
+#bottom {
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+#top .machine,
+#bottom .machine {
+  width: 12.5%;
+  margin: 0 5px 5px 0;
+}
+#top .machine:last-of-type,
+#bottom .machine:last-of-type {
+  margin-right: 0px;
+}
+#top button,
+#bottom button {
+  width: 100%;
+  height: 100px;
+}
+#top .live,
+#bottom .live {
+  display: block;
+  background-color: #000;
+  color: #fff;
+  padding: 3px;
+}
+#middle {
+  height: 400px;
+  background-color: #409123;
+  font-size: 130px;
+}
+#logbook {
+  background-color: #876123;
+}
+#functions {
+  background-color: #345098;
+}

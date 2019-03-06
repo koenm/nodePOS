@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title='nodePOS'
+    link(href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous')
+    link(rel='stylesheet', href='/css/master.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js' integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=' crossorigin='anonymous')
+    script(src='/js/functions.js' charset='utf-8')
+
+  body
+    div.container-fluid
+        div.row
+          div.col-12
+            div.row
+              div.col-8#top
+              div.col-4#logbook.
+                logbook
+            div.row
+              div.col-8
+                div.row
+                  div.col-12#middle.
+                    € 0.00
+                div.row
+                  div.col-12#bottom
+              div.col-4
+                div.row
+                  div.col-12#functions.
+                    Functions
+
+
+    block scripts
+    block content

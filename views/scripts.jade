@@ -1,0 +1,15 @@
+extends layout
+
+block scripts
+        
+  script.
+    machines.forEach(function(machine) {
+      button = document.createElement('button')
+      button.className = 'btn btn-danger'
+      button.textContent = machine.name
+      document.getElementById(machine.row).appendChild(button)
+      span = document.createElement('span')
+      span.style.backgroundColor2- = '#000';
+      button.textContent = '0s00'
+      document.getElementById(machine.row).appendChild(span)
+    });
