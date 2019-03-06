@@ -80,39 +80,66 @@ var oids = theMachine.oids;
 //oids = Object.keys(oids).map(i => oids[i]);
 
 var counter = [];
-function getTheCounter(key, oids) {
 
-  return new Promise (
-    function (resolve, reject) {
-      session.get(oids, function(error, varbinds) {
-        if (error) {
-          reject(error);
+// session.get(oid, function(error, varbinds) {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     if (snmp.isVarbindError(varbinds[0])) {
+//       console.log(snmp.varbindError(varbinds[0]));
+//     } else {
+//       console.log([key, varbinds[0].value]);
+//     }
+//   }
+// });
+oid = ["1.3.6.1.4.1.253.8.53.13.2.1.6.1.20.1"];
+function getTheCounter(oid) {
+  return new Promise(function(resolve, reject) {
+    session.get(oid, function(error, varbinds) {
+      if (error) {
+        reject(error);
+      } else {
+        if (snmp.isVarbindError(varbinds[0])) {
+          resolve( snmp.varbindError(varbinds[0]));
         } else {
-          if (snmp.isVarbindError(varbinds[0])) {
-            reject(snmp.varbindError(varbinds[0]));
-          } else {
-            resolve([key, varbinds[0].value]);
-          }
+          reject([varbinds[0].value]);
         }
-      });
-    }
-  );
+      }
+    });
+  });
+
+
 }
+getTheCounter(oid)
+  .then(function (f) {
+    console.log(f);
+  })
+  .catch(function (e) {
+    console.log(e);
+  })
+
+
+
+
+
+
+
+
 for (var key in oids) {
+
 
   // aangezien session.get enkel een array van strings aannneemt moet
   // elke value in de oid array naar een array van 1 element omgezet worden
-  oidArray = [oids[key].oid];
-
-
-  getTheCounter(key, oidArray)
-    .then(function (val) {
-      theMachine.oids[val[0]].value = val[1];
-      console.log(theMachine);
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
+  // oidArray = [oids[key].oid];
+  //
+  // getTheCounter(key, oidArray)
+  //   .then(function (val) {
+  //     //theMachine.oids[val[0]].value = val[1];
+  //     //console.log(val);
+  //   })
+  //   .catch(function (err) {
+  //     console.log(err);
+  //   });
 }
 
 
