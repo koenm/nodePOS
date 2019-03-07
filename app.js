@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var stylus = require('stylus');
 var snmp = require("net-snmp");
 
+
 var settings = require("./public/js/settings.js");
 
 var index = require('./routes/index');
@@ -80,43 +81,44 @@ var oids = theMachine.oids;
 //oids = Object.keys(oids).map(i => oids[i]);
 
 var counter = [];
-
-// session.get(oid, function(error, varbinds) {
-//   if (error) {
-//     console.log(error);
-//   } else {
-//     if (snmp.isVarbindError(varbinds[0])) {
-//       console.log(snmp.varbindError(varbinds[0]));
-//     } else {
-//       console.log([key, varbinds[0].value]);
-//     }
-//   }
-// });
 oid = ["1.3.6.1.4.1.253.8.53.13.2.1.6.1.20.1"];
-function getTheCounter(oid) {
+
+const fetch = require('node-fetch');
+
+function getTheCounter() {
   return new Promise(function(resolve, reject) {
+
     session.get(oid, function(error, varbinds) {
       if (error) {
         reject(error);
       } else {
         if (snmp.isVarbindError(varbinds[0])) {
-          resolve( snmp.varbindError(varbinds[0]));
+          resolve(snmp.varbindError(varbinds[0]));
         } else {
-          reject([varbinds[0].value]);
+          resolve([varbinds[0].value]);
         }
       }
     });
+
   });
-
-
 }
-getTheCounter(oid)
-  .then(function (f) {
-    console.log(f);
-  })
-  .catch(function (e) {
-    console.log(e);
-  })
+
+async function c() {
+  var theCounter = await getTheCounter();
+  console.log(theCounter);
+}
+c();
+
+
+
+
+// getTheCounter(oid)
+//   .then(function (f) {
+//     console.log(f);
+//   })
+//   .catch(function (e) {
+//     console.log(e);
+//   });
 
 
 
