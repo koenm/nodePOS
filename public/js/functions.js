@@ -7,7 +7,7 @@ $(document).ready(function() {
 });
 
 function getCounter(id) {
-  $.post('/getCounter', {id:$(id).prop('id')}, function(result){
-    console.log(result);
+  $.post('/getCounter', {id:$(id).prop('id')}, function(counter){
+    console.log(counter);
   });
 }

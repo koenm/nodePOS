@@ -63,94 +63,62 @@ app.post('/',function(req, res) {
     res.send([htmlTop, htmlBottom]);
 });
 
-
-// STAAT HIER OM OP BIJ REFRESH DIRECT UIT TE VOEREN.
-// MOET VERPLAATST WORDEN NAAR /getcounter
-
-// clicked machine
-theMachine = settings.machines.filter((machine) => machine.id == 12)[0];
-
-var options = {
-    retries: 1,
-    timeout: 500
-};
-
-var session = snmp.createSession (theMachine.ip, "public", options);
-var oids = theMachine.oids;
-
-//oids = Object.keys(oids).map(i => oids[i]);
-
-var counter = [];
-oid = ["1.3.6.1.4.1.253.8.53.13.2.1.6.1.20.1"];
-
-const fetch = require('node-fetch');
-
-function getTheCounter() {
-  return new Promise(function(resolve, reject) {
-
-    session.get(oid, function(error, varbinds) {
-      if (error) {
-        reject(error);
-      } else {
-        if (snmp.isVarbindError(varbinds[0])) {
-          resolve(snmp.varbindError(varbinds[0]));
-        } else {
-          resolve([varbinds[0].value]);
-        }
-      }
-    });
-
-  });
-}
-
-async function c() {
-  var theCounter = await getTheCounter();
-  console.log(theCounter);
-}
-c();
-
-
-
-
-// getTheCounter(oid)
-//   .then(function (f) {
-//     console.log(f);
-//   })
-//   .catch(function (e) {
-//     console.log(e);
-//   });
-
-
-
-
-
-
-
-
-for (var key in oids) {
-
-
-  // aangezien session.get enkel een array van strings aannneemt moet
-  // elke value in de oid array naar een array van 1 element omgezet worden
-  // oidArray = [oids[key].oid];
-  //
-  // getTheCounter(key, oidArray)
-  //   .then(function (val) {
-  //     //theMachine.oids[val[0]].value = val[1];
-  //     //console.log(val);
-  //   })
-  //   .catch(function (err) {
-  //     console.log(err);
-  //   });
-}
-
-
-
-
 //res.send(counters);
 
 
 app.post('/getCounter', function(req, res) {
+
+  // STAAT HIER OM OP BIJ REFRESH DIRECT UIT TE VOEREN.
+  // MOET VERPLAATST WORDEN NAAR /getcounter
+
+  // clicked machine
+  theMachine = settings.machines.filter((machine) => machine.id == req.body.id)[0];
+
+  var options = {
+      retries: 1,
+      timeout: 500
+  };
+
+  var session = snmp.createSession (theMachine.ip, "public", options);
+  var oids = theMachine.oids;
+  var counter = {};
+
+  function getTheCounter(oid) {
+    return new Promise(function(resolve, reject) {
+      session.get([oid], function(error, varbinds) {
+        if (error) {
+          reject(error);
+        } else {
+          if (snmp.isVarbindError(varbinds[0])) {
+            resolve(snmp.varbindError(varbinds[0]));
+          } else {
+            resolve(varbinds[0].value);
+          }
+        }
+      });
+
+    });
+  }
+  //oids = Object.keys(oids).map(i => oids[i]);
+
+  async function getAllCounters() {
+    for (var key in oids) {
+      var theCounter = await getTheCounter(oids[key].oid);
+      counter[key] = theCounter;
+    }
+    try {
+      return counter;
+    } catch (e) {
+      return e
+    }
+  }
+  getAllCounters()
+    .then(function (resp) {
+      res.send(resp);
+    })
+    .catch(function (err) {
+      console.error(err + " eeeeeeeeeeeeeeeeeeeeeeeeee");
+    })
 
 });
 
